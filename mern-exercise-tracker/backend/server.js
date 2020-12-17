@@ -27,9 +27,14 @@ const usersRouter = require('./routes/users');
 app.use('/exercises', exercisesRouter);
 app.use('/users', usersRouter);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "mern-exercise-tracker", "build", "index.html"));
-});
+if(process.env.NODE_ENV === "production") {
+  app.use(express.static('Client/build'));
+
+  app.get('*', (req,res)=>{
+      res.sendFile(path.join(__dirname,'build','index.html'));
+      
+  } )
+}
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
